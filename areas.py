@@ -8,10 +8,9 @@ def countries(data):
 
 
 def state(data):
-    data['TOT_AREA_2010'] = data['SUBHD0301']
-    data['LAND_AREA_2010'] = data['SUBHD0302']
-    data['STATE'] = data['GCT_STUB.display-label']  # can't get rid of US before state bc the original CSV has them labeled as the same :(
-    return data.loc[1::, ['STATE', 'TOT_AREA_2010', 'LAND_AREA_2010']]
+    data['AREA_2010'] = data['SUBHD0302']  # total land area of states-consistent with country land area
+    data['STATE'] = data['GCT_STUB.display-label1']  # can't get rid of US before state bc the original CSV has them labeled as the same :(
+    return data.loc[1::, ['STATE', 'AREA_2010']]
 
 
 def main():
