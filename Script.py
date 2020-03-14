@@ -12,3 +12,4 @@ set2 = set2[(set2['Year'] == 2014) | (set2['Year'] == 2015)]
 set1 = set1[(set1['Year'] == 2014) | (set1['Year'] == 2015)]
 
 data = set1.merge(set2, left_on = ['Entity', 'Year', 'Code'], right_on = ['Entity', 'Year', 'Code'], how='left')
+data = data.dropna()
