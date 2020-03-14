@@ -10,7 +10,7 @@ def countries(data):
 def state(data):
     data['AREA_2010'] = data['SUBHD0303']  # total land area of states-consistent with country land area
     data['STATE'] = data['GCT_STUB.display-label1']
-    return data.loc[1::, ['STATE', 'AREA_2010']]
+    return data.loc[1::, ['STATE', 'AREA_2010']]  # for now, includes US total land area
 
 
 def main():
