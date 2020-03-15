@@ -27,7 +27,11 @@ def temp(file):
     need to finish, plus TEMP_YEAR
     """
     data = pd.read_csv(file)
-    # data = data[data['dt'] is True for 2013 in data['dt']]
+    for i in range(len(data)):
+        year = data.loc[i, 'dt']
+        year = year[0:4]
+        if year != 2013:
+            data.drop(i)
     return data
 
 
