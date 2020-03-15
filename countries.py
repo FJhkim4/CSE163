@@ -33,7 +33,7 @@ def temp(file):
         if year != 2013:
             data.drop(i)
     data = data.drop(columns = 'dt')
-    data = data.groupby('Country')
+    data = data.groupby('Country').mean()
     return data
 
 
