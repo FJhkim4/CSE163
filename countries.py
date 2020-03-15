@@ -24,14 +24,17 @@ def area(file):
 
 def temp(file):
     """
-    need to finish, plus TEMP_YEAR
+    deal with error at the end? temp in celcius
+    includes data from most recent year--2013
+    avg. month temps to get annual temps
     """
-    data['bool'] = data['dt'].str.contains('2013', regex=False)
-    data = data[data['bool'] == True]
-    data = data.dropna()
-
-    data = data[['AverageTemperature', 'AverageTemperatureUncertainty', 'Country']]
-    data = data.groupby('Country').mean()
+    data = pd.read_csv(file)
+    data = data[data['dt'].str.contains('2013', regex=False)].dropna()
+    data.rename(columns={'AverageTemperature': 'TEMP', 'AverageTemp' + (
+        'eratureUncertainty'): 'TEMP_DEV', 'Country': 'NAME'}, inplace=True)
+    data = data[['NAME', 'TEMP', 'TEMP_DEV']]
+    data = data.groupby('NAME').mean().reset_index()
+    data['TEMP_YEAR'] = 2013
     return data
 
 
