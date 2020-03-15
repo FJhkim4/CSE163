@@ -7,13 +7,12 @@ import geopandas as gpd
 
 # TO DO:
 # names of countries work for merge (e.g. S. Sudan vs South Sudan)
-# find hospital data/hosp_desnity(merge)
-# get malaria data integrated
+# hosp bed density for each countries most recent year
 # get temp data to work
 
 def area(file):
     """
-    Description
+    ready to merge
     """
     data = pd.read_csv(file)
     data.rename(columns={'2010': 'AREA', 'Country Name': 'NAME'},
@@ -34,7 +33,7 @@ def temp(file):
 
 def shape(file):
     """
-    Description
+    ready to merge
     """
     data = gpd.read_file(file)  # gdp in millions of dollars
     data = data[['NAME', 'GDP_MD_EST', 'POP_EST', 'GDP_YEAR',
@@ -45,9 +44,27 @@ def shape(file):
 
 def hospital(file):
     """
-    find data, hospital_year,hosp_density
+    get most recent hospital density and include year!!
+    Includes hospital beds available in public, private, general, and
+    specilized hospitals & rehab centers. Beds for acute and chronic
+    care included. Density is hospital beds per 1000 people
     """
     data = pd.read_csv(file)
+    data.rename(column={'Country Name': 'NAME'}, inplace=True)
+    return data
+
+
+def malaria(file1, file2):
+    """
+    ready to merge; warren why do you left merge rather than inner? Incidence
+    per 1000 at risk, death is per 100000 people.
+    """
+    data1 = pd.read_csv(file1)
+    data2 = pd.read_csv(file2)
+    data1 = data1[data1['Year'] == 2015]
+    data2 = data2[data2['Year'] == 2015]
+    data = data1.merge(data2, left_on=['Entity', 'Year', 'Code'], right_on=['Entity', 'Year', 'Code'], how='left').dropna()
+    data.rename(columns={'Incidence of malaria (per 1,000 population at risk) (per 1,000 population at risk)': 'INCIDENCE_1000', 'Entity': 'NAME', 'Deaths - Malaria - Sex: Both - Age: Age-standardized (Rate) (per 100,000 people)': 'DEATH_100000'}, inplace=True)
     return data
 
 
@@ -66,9 +83,12 @@ def main():
         'GlobalLandTemperaturesByCountry.csv'))
     d3 = shape('/Users/wopr/Documents/Final Project Anne/test/data/' + (
         'ne_110m_admin_0_countries.shp'))
-    # d4 = hospital(file)
-    # d5 = malaria shit--warren??
-    # merge(d1, d2, d3, d4, d5)
+    d4 = hospital('https://raw.githubusercontent.com/WarrenHan/' + (
+        'CSE163/master/API_SH.MED.BEDS.ZS_DS2_en_csv_v2_867087.csv'))
+    d5 = malaria('https://raw.githubusercontent.com/WarrenHan/CSE163/' + (
+        'master/malaria-death-rates.csv'), 'https://raw.githubuser' + (
+        'content.com/WarrenHan/CSE163/master/incidence-of-malaria.csv'))
+    merge(d1, d2, d3, d4, d5)
 
 
 if __name__ == '__main__':
