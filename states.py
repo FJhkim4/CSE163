@@ -25,8 +25,12 @@ def temp(file):
     """
     NOT READY!!!, Include temp year (2013)
     """
-    data = pd.read_csv(file)
-    data = data[data['Country'] == 'United States']  # .dropna() here or later?
+    data = data[data['Country'] == 'United States']
+    data['bool'] = data['dt'].str.contains('2013', regex=False)
+    data = data[data['bool'] == True]
+    data = data.dropna()
+    data = data[['AverageTemperature', 'State']]
+    data = data.groupby('State').mean()
     return data
 
 
