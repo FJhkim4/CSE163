@@ -6,13 +6,13 @@ import geopandas as gpd
 
 
 # TO DO:
-# hospital_density(merge)
-# GDP_PER_CAPITA(merge/convert str to ints/multiply by 10^-6)
-# POP_DENSITY(merge)
+# hospital bed density(merge)
+# GDP_PER_CAPITA
+# Hospt states change from IDs to state titles (create a class?)
 # get temp data to work
 def area(file):
     """
-    Description
+    ready to merge
     """
     data = pd.read_csv(file)
     data.rename(columns={'GCT_STUB.display-label1': 'STATE',
@@ -21,25 +21,24 @@ def area(file):
     return data.loc[2::, ['STATE', 'AREA', 'AREA_YEAR']]  # no na vals
 
 
-# need to figure out
 def temp(file):
     """
-    Description
+    NOT READY!!!, Include temp year (2013)
     """
     data = pd.read_csv(file)
-    data = data[data['Country'] == 'United States'].dropna()
+    data = data[data['Country'] == 'United States']  # .dropna() here or later?
     return data
 
 
 def shape(file):
     """
-    GDP_MD_EST needs to be changed from a str into and int & mult. by
-    10**-6 (10^-6)
+    ready to merge; converts $ to millions of $ for GDP
     """
     data = gpd.read_file(file)
     data.rename(columns={'State_Bo_2': 'STATE', 'GDP_by_S41':
                          'GDP_MD_EST'}, inplace=True)
     data['GDP_YEAR'] = 2016
+    data['GDP_MD_EST'] = data['GDP_MD_EST'].astype(float) * 10**-6  # converts
     return data[['STATE', 'GDP_MD_EST', 'GDP_YEAR', 'geometry']]  # no na vals
 
 
@@ -48,16 +47,17 @@ def hosp(file):
     The STATE IDs need to be chnaged to their full names
     """
     data = gpd.read_file(file)
-    data = data.loc[(data['STATUS'] == 'OPEN'), ['NAME', 'STATE']]
-    data.rename(columns={'NAME': 'HOSP_COUNT'}, inplace=True)
-    data = data.groupby('STATE')['HOSP_COUNT'].count().reset_index()
+    data = data.loc[(data['STATUS'] == 'OPEN') & (data['BEDS'] > 0),
+                    ['BEDS', 'STATE']]
+    data.rename(columns={'BEDS': 'HOSP_BEDS'}, inplace=True)
+    data = data.groupby('STATE')['HOSP_BEDS'].sum().reset_index()
     data['HOSP_YEAR'] = 2019
     return data
 
 
 def pop(file):
     """
-    This function should be ready to merge
+    ready to merge
     """
     data = pd.read_csv(file)
     data.rename(columns={'NAME': 'STATE', 'POPESTIMATE2015': 'POP_EST'},
