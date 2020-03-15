@@ -32,6 +32,8 @@ def temp(file):
         year = year[0:4]
         if year != 2013:
             data.drop(i)
+    data = data.drop(columns = 'dt')
+    data = data.groupby('Country')
     return data
 
 
