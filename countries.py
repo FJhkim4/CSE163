@@ -26,13 +26,11 @@ def temp(file):
     """
     need to finish, plus TEMP_YEAR
     """
-    data = pd.read_csv(file)
-    for i in range(len(data)):
-        year = data.loc[i, 'dt']
-        year = year[0:4]
-        if year != 2013:
-            data.drop(i)
-    data = data.drop(columns = 'dt')
+    data['bool'] = data['dt'].str.contains('2013', regex=False)
+    data = data[data['bool'] == True]
+    data = data.dropna()
+
+    data = data[['AverageTemperature', 'AverageTemperatureUncertainty', 'Country']]
     data = data.groupby('Country').mean()
     return data
 
