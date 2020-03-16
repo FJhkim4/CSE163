@@ -61,16 +61,14 @@ def hospital(file):
 
 def malaria(file1, file2):
     """
-    ready to merge; warren why do you left merge rather than inner? Incidence
-    per 1000 at risk, death is per 100000 people.
+    ready to merge; incidence per 1000 at risk, death is per 100000 people
     """
     data1 = pd.read_csv(file1)
     data2 = pd.read_csv(file2)
     data1 = data1[data1['Year'] == 2015]
     data2 = data2[data2['Year'] == 2015]
     data = data1.merge(data2, left_on=['Entity', 'Year', 'Code'],
-                       right_on=['Entity', 'Year', 'Code'],
-                       how='left').dropna()
+                       right_on=['Entity', 'Year', 'Code'].dropna()                   
     data.rename(columns={'Incidence of malaria (per 1,000 population at ' + (
                 'risk) (per 1,000 population at risk)'): 'INCIDENCE_1000',
                 'Entity': 'NAME', 'Deaths - Malaria - Sex: Both - Age: ' + (
