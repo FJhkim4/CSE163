@@ -3,11 +3,12 @@
 # Descriptiom
 import pandas as pd
 import geopandas as gpd
+from functools import reduce
 
 
 # TO DO:
 # names of countries work for merge (e.g. S. Sudan vs South Sudan)
-# hosp bed density for each countries most recent year
+# get the merged function to work!!!
 def area(file):
     """
     ready to merge
@@ -47,6 +48,7 @@ def shape(file):
     return data
 
 
+# NEEDS TO BE FINISHED--GET HOSP_BEDS_DENS
 def hospital(file):
     """
     get most recent hospital density and include year!!
@@ -55,7 +57,6 @@ def hospital(file):
     care included. Density is hospital beds per 1000 people
     """
     data = pd.read_csv(file)
-    # data.rename(column={'Country Name': 'NAME'}, inplace=True)
     return data
 
 
@@ -68,7 +69,7 @@ def malaria(file1, file2):
     data1 = data1[data1['Year'] == 2015]
     data2 = data2[data2['Year'] == 2015]
     data = data1.merge(data2, left_on=['Entity', 'Year', 'Code'],
-                       right_on=['Entity', 'Year', 'Code'].dropna()                   
+                       right_on=['Entity', 'Year', 'Code']).dropna()
     data.rename(columns={'Incidence of malaria (per 1,000 population at ' + (
                 'risk) (per 1,000 population at risk)'): 'INCIDENCE_1000',
                 'Entity': 'NAME', 'Deaths - Malaria - Sex: Both - Age: ' + (
@@ -77,11 +78,14 @@ def malaria(file1, file2):
     return data
 
 
-def merge(area, temp, shape, hosp, malaria):
+def merged(dfs):
     """
-    Merges cleaned datasets into mother dataframe for countries
+    Generates mother country dataframe to be used in correlation analysis,
+    machine learning, and generating plots
     """
-    print('WHOOO')
+    merge = reduce(lambda left, right: pd.merge(left, right, on=['NAME'],
+                                                ), dfs)
+    return merge
 
 
 def main():
@@ -92,11 +96,13 @@ def main():
     d3 = shape('/Users/wopr/Documents/Final Project Anne/test/data/' + (
         'ne_110m_admin_0_countries.shp'))
     d4 = hospital('https://raw.githubusercontent.com/WarrenHan/' + (
-        'CSE163/master/API_SH.MED.BEDS.ZS_DS2_en_csv_v2_867087.csv'))
+                  'CSE163/master/Hospital_Beds.csv'))
     d5 = malaria('https://raw.githubusercontent.com/WarrenHan/CSE163/' + (
         'master/malaria-death-rates.csv'), 'https://raw.githubuser' + (
         'content.com/WarrenHan/CSE163/master/incidence-of-malaria.csv'))
-    merge(d1, d2, d3, d4, d5)
+    dfs = [d1, d2, d3, d4, d5]
+    merged(dfs)
+    print(merged)
 
 
 if __name__ == '__main__':
