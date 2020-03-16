@@ -23,7 +23,7 @@ def area(file):
 
 def temp(file):
     """
-    temp in celcius
+    ready to merge, temp in celcius
     includes data from most recent year--2013
     avg. month temps to get annual temps
     """
@@ -96,8 +96,6 @@ def merge(area, temp, shape, hosp, pop):
     print('WOOHOOO')
 
 
-# temp file for states too big to upload on github
-# link to data is in limitations doc on drive
 def main():
     d1 = area('https://raw.githubusercontent.com/WarrenHan/CSE163/master/' + (
         'DEC_10_SF1_GCTPH1.US01PR_with_ann.csv'))
