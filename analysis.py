@@ -76,12 +76,30 @@ def correlation(df):
     print(rp_i_temp)
 
 
+def plot(df):
+    fig_d, [axd1, axd2, axd3, axd4, axd5] = plt.subplots(5)
+    fig_i, [axi1, axi2, axi3, axi4, axi5] = plt.subplots(5)
+
+    df.plot.scatter(x=(df['POP_EST'], y=df['DEATH_100000'], ax=axd1)
+    df.plot.scatter(x=(df['GDP_CAPITA'], y=df['DEATH_100000'], ax=axd2)
+    df.plot.scatter(x=(df['HOSP_BEDS_DENS'], y=df['DEATH_100000'], ax=axd3)
+    df.plot.scatter(x=(df['AREA'], y=df['DEATH_100000'], ax=axd4)
+    df.plot.scatter(x=(df['TEMP'], y=df['DEATH_100000'], ax=axd5)
+
+    axd1.set_title('Population Estimate vs Death Rates')
+    axd2.set_title('GDP per Capita vs Death Rates')
+    axd3.set_title('Hospital Beds Density vs Death Rates')
+    axd4.set_title('Area vs Death Rates')
+    axd5.set_title('Temperature vs Death Rates')
+    
+
 def main():
     state_df = state()  # creates states main dataframe
     print(state_df)
     country_df = country()  # creates countries main dataframe
     print(country_df)
     correlation(country_df)  # determines feature correlation to labels
+    plot(country_df)
 
 
 if __name__ == '__main__':
