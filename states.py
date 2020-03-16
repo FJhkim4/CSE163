@@ -96,7 +96,8 @@ def merged(dfs):
     merge = reduce(lambda left, right: pd.merge(left, right, on=['STATE'],
                                                 ), dfs)
     merge['GDP_CAPITA'] = merge['GDP_MD_EST'] / merge['POP_EST']
-    merge['HOSP_BEDS_DENS'] = merge['HOSP_BEDS'] / merge['POP_EST']
+    # calculates hospital beds available per 1000 people
+    merge['HOSP_BEDS_DENS'] = merge['HOSP_BEDS'] / merge['POP_EST'] * 1000
     return merge
 
 
