@@ -102,7 +102,7 @@ def main():
         'content.com/WarrenHan/CSE163/master/incidence-of-malaria.csv'))
     dfs = [d1, d2, d3, d4, d5]
     merged(dfs)
-    print(merged)
+    print(merged(dfs))
 
 
 if __name__ == '__main__':
