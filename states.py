@@ -3,13 +3,13 @@
 # Descriptiom
 import pandas as pd
 import geopandas as gpd
+from switch import IdSwitch
 
 
 # TO DO:
 # hospital bed density(merge)
-# GDP_PER_CAPITA
+# GDP per capita (merge)
 # Hospt states change from IDs to state titles (create a class?)
-# get temp data to work
 def area(file):
     """
     ready to merge
@@ -23,14 +23,20 @@ def area(file):
 
 def temp(file):
     """
-    NOT READY!!!, Include temp year (2013)
+    temp in celcius
+    includes data from most recent year--2013
+    avg. month temps to get annual temps
     """
+    data = pd.read_csv(file)
     data = data[data['Country'] == 'United States']
-    data['bool'] = data['dt'].str.contains('2013', regex=False)
-    data = data[data['bool'] == True]
-    data = data.dropna()
-    data = data[['AverageTemperature', 'State']]
-    data = data.groupby('State').mean()
+    data = data[data['dt'].str.contains('2013', regex=False)].dropna()
+    data.rename(columns={'AverageTemperature': 'TEMP', 'AverageTemp' + (
+        'eratureUncertainty'): 'TEMP_DEV', 'State': 'STATE'}, inplace=True)
+    data = data[['STATE', 'TEMP', 'TEMP_DEV']]
+    data = data.groupby('STATE').mean().reset_index()
+    data['TEMP_YEAR'] = 2013
+    # Georgia was Georgia (State) before
+    data.loc[(data['STATE'].str.contains('Georgia')), 'STATE'] = 'Georgia'
     return data
 
 
@@ -48,7 +54,7 @@ def shape(file):
 
 def hosp(file):
     """
-    The STATE IDs need to be chnaged to their full names
+    DEAL WITH WARNING flake8 throws when using the class IdSwitch
     """
     data = gpd.read_file(file)
     data = data.loc[(data['STATUS'] == 'OPEN') & (data['BEDS'] > 0),
@@ -56,6 +62,16 @@ def hosp(file):
     data.rename(columns={'BEDS': 'HOSP_BEDS'}, inplace=True)
     data = data.groupby('STATE')['HOSP_BEDS'].sum().reset_index()
     data['HOSP_YEAR'] = 2019
+
+    # switches the STATE col from ID to state name
+    states = IdSwitch(data['STATE'])
+    states.add('DC', 'District of Columbia')
+    states.add('GU', 'Guam')
+    states.add('PR', 'Puerto Rico')
+    states.add('PW', 'Palau')
+    states.add('VI', 'Virgin Islands')
+    states = states.switch()
+    data['STATE'] = states
     return data
 
 
@@ -64,10 +80,12 @@ def pop(file):
     ready to merge
     """
     data = pd.read_csv(file)
-    data.rename(columns={'NAME': 'STATE', 'POPESTIMATE2015': 'POP_EST'},
-                inplace=True)
+    data.rename(columns={'STATE': 'ID', 'NAME': 'STATE',
+                         'POPESTIMATE2015': 'POP_EST'}, inplace=True)
     data['POP_YEAR'] = 2015
     data = data[['STATE', 'POP_EST', 'POP_YEAR']]
+    data.loc[(data['STATE'].str.contains('Puerto Rico')), 'STATE'] = (
+            'Puerto Rico')
     return data[1::]  # removes total US POP_EST, no na vals
 
 
