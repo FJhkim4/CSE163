@@ -92,17 +92,22 @@ def correlation(df):
     """
     Finds the correlation between different variables from each country and
     compares them to death rates and malaria incidents.
-    Specifically finding the r and p value which determines levels of correlation.
+    Specifically finding the r and p value which determines levels 
+    of correlation.
     population estimate, GDP capita, Hospital beds density, temp
     Death rates, incident rates
     """
+    # creates tuple pairs with (r, p) values for each pair
     rp_d_pop = pearsonr(list(df['POP_EST']), list(df['DEATH_100000']))
     rp_d_gdp = pearsonr(list(df['GDP_CAPITA']), list(df['DEATH_100000']))
     rp_d_hbd = pearsonr(list(df['HOSP_BEDS_DENS']), list(df['DEATH_100000']))
+    rp_d_area = pearsonr(list(df['AREA'], list(df['DEATH_100000']))
     rp_d_temp = pearsonr(list(df['TEMP']), list(df['DEATH_100000']))
+
     rp_i_pop = pearsonr(list(df['POP_EST']), list(df['INCIDENCE_1000']))
     rp_i_gdp = pearsonr(list(df['GDP_CAPITA']), list(df['INCIDENCE_1000']))
     rp_i_hbd = pearsonr(list(df['HOSP_BEDS_DENS']), list(df['INCIDENCE_1000']))
+    rp_i_area = pearsonr(list(df['AREA']), list(df['INCIDENCE_1000']))
     rp_i_temp = pearsonr(list(df['TEMP']), list(df['INCIDENCE_1000']))
 
 
