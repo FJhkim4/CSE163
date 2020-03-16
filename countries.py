@@ -8,8 +8,6 @@ import geopandas as gpd
 # TO DO:
 # names of countries work for merge (e.g. S. Sudan vs South Sudan)
 # hosp bed density for each countries most recent year
-# get temp data to work
-
 def area(file):
     """
     ready to merge
@@ -57,7 +55,7 @@ def hospital(file):
     care included. Density is hospital beds per 1000 people
     """
     data = pd.read_csv(file)
-    data.rename(column={'Country Name': 'NAME'}, inplace=True)
+    # data.rename(column={'Country Name': 'NAME'}, inplace=True)
     return data
 
 
@@ -70,8 +68,14 @@ def malaria(file1, file2):
     data2 = pd.read_csv(file2)
     data1 = data1[data1['Year'] == 2015]
     data2 = data2[data2['Year'] == 2015]
-    data = data1.merge(data2, left_on=['Entity', 'Year', 'Code'], right_on=['Entity', 'Year', 'Code'], how='left').dropna()
-    data.rename(columns={'Incidence of malaria (per 1,000 population at risk) (per 1,000 population at risk)': 'INCIDENCE_1000', 'Entity': 'NAME', 'Deaths - Malaria - Sex: Both - Age: Age-standardized (Rate) (per 100,000 people)': 'DEATH_100000'}, inplace=True)
+    data = data1.merge(data2, left_on=['Entity', 'Year', 'Code'],
+                       right_on=['Entity', 'Year', 'Code'],
+                       how='left').dropna()
+    data.rename(columns={'Incidence of malaria (per 1,000 population at ' + (
+                'risk) (per 1,000 population at risk)'): 'INCIDENCE_1000',
+                'Entity': 'NAME', 'Deaths - Malaria - Sex: Both - Age: ' + (
+                'Age-standardized (Rate) (per 100,000 people)'):
+                'DEATH_100000'}, inplace=True)
     return data
 
 
