@@ -22,7 +22,7 @@ def area(file):
 
 def temp(file):
     """
-    deal with error at the end? temp in celcius
+    ready to merge; temp in celcius
     includes data from most recent year--2013
     avg. month temps to get annual temps
     """
@@ -86,7 +86,6 @@ def merge(area, temp, shape, hosp, malaria):
     print('WHOOO')
 
 
-# I couldn't get all the files to link from the internet
 def main():
     d1 = area('https://raw.githubusercontent.com/WarrenHan/CSE163/master' + (
         '/API_AG.LND.TOTL.K2_DS2_en_csv_v2_822348.csv'))
