@@ -2,7 +2,7 @@
 # CSE 163, Mentor: Wen Qiu
 # Descriptiom
 import pandas as pd
-# import geopandas as gpd
+import geopandas as gpd
 from switch import IdSwitch
 from functools import reduce
 

@@ -87,6 +87,60 @@ def merged(dfs):
                                                 ), dfs)
     return merge
 
+def correlation(df):
+    """
+    Finds the correlation between different variables from each country and
+    compares them to death rates and malaria incidents.
+    Specifically finding the r value which determines levels of correlation.
+    population estimate, GDP capita, Hospital beds density, temp
+    Death rates, incident rates
+    """
+    total_pairs = len(df['DEATH_10000']) - 1 # pairs (used to calculate r value)
+
+    # avgs for all relevant information
+    avg_pop = df['POP_EST'].mean() # pop est
+    avg_gdp = df['GDP_CAPITA'].mean() # gdp capita
+    avg_hbd = df['HOSP_BEDS_DENS'].mean() # hosp beds dens
+    avg_temp = df['TEMP'].mean() # temp
+    avg_deaths = df['DEATH_100000'].mean() # death rate
+    avg_incident = df['INCIDENCE_1000'].mean() # incident  rate
+
+    # standard deviation of all values with numerical data
+    std_all = df.std(axis = 0, skipna = True) # Series
+
+    # makes a list of tuples with x -> deathrate. ex.(pop, deathrate)
+    pop_d_pairs = list(zip(list(df['POP_EST']), list(df['DEATH_10000'])))
+    gdp_d_pairs = list(zip(list(df['GDP_CAPITA']), list(df['DEATH_10000'])))
+    hbd_d_pairs = list(zip(list(df['HOSP_BEDS_DENS']), list(df['DEATH_10000'])))
+    temp_d_pairs = list(zip(list(df['TEMP']), list(df['DEATH_10000'])))
+
+    # makes a list of tuple with x -> incident rates
+    pop_i_pairs = list(zip(list(df['POP_EST']), list(df['INCIDENCE_1000'])))
+    gdp_i_pairs = list(zip(list(df['GDP_CAPITA']), list(df['INCIDENCE_1000'])))
+    hbd_i_pairs = list(zip(list(df['HOSP_BEDS_DENS']), list(df['INCIDENCE_1000'])))
+    temp_i_pairs = list(zip(list(df['TEMP']), list(df['INCIDENCE_1000'])))
+
+    # for each total_pair computes function. (used to calculate r)
+    pop_d_sum = reduce(lambda x, y: (x - avg_pop)(y - avg_deaths), pop_d_pairs)
+    gdp_d_sum = reduce(lambda x, y: (x - avg_pop)(y - avg_deaths), gdp_d_pairs)
+    hbd_d_sum = reduce(lambda x, y: (x - avg_pop)(y - avg_deaths), hbd_d_pairs)
+    temp_d_sum = reduce(lambda x, y: (x - avg_pop)(y - avg_deaths), temp_d_pairs)
+
+    pop_i_sum = reduce(lambda x, y: (x - avg_pop)(y - avg_deaths), pop_i_pairs)
+    gdp_i_sum = reduce(lambda x, y: (x - avg_pop)(y - avg_deaths), gdp_i_pairs)
+    hbd_i_sum = reduce(lambda x, y: (x - avg_pop)(y - avg_deaths), hbd_i_pairs)
+    temp_i_sum = reduce(lambda x, y: (x - avg_pop)(y - avg_deaths), temp_i_pairs)
+
+    # R values of all data. d = death rates, i = incident rates 
+    r_d_pop = pop_d_sum / std_all['POP_EST'] * std_all['DEATH_100000'] / total_pairs
+    r_d_gdp = gdp_d_sum / std_all['GDP_CAPITA'] * std_all['DEATH_100000'] / total_pairs
+    r_d_hbd = hbd_d_sum / std_all['HOSP_BEDS_DENS'] * std_all['DEATH_100000'] / total_pairs
+    r_d_temp = temp_d_sum / std_all['TEMP'] * std_all['DEATH_100000'] / total_pairs
+    r_i_pop = pop_i_sum / std_all['POP_EST'] * std_all['INCIDENCE_1000'] / total_pairs
+    r_i_gdp = gdp_i_sum / std_all['GDP_CAPITA'] * std_all['INCIDENCE_1000'] / total_pairs
+    r_i_hbd = hbd_i_sum / std_all['HOSP_BEDS_DENS'] * std_all['INCIDENCE_1000'] / total_pairs
+    r_i_temp = temp_i_sum / std_all['TEMP'] * std_all['INCIDENCE_1000'] / total_pairs
+
 
 def main():
     d1 = area('https://raw.githubusercontent.com/WarrenHan/CSE163/master' + (
@@ -101,8 +155,9 @@ def main():
         'master/malaria-death-rates.csv'), 'https://raw.githubuser' + (
         'content.com/WarrenHan/CSE163/master/incidence-of-malaria.csv'))
     dfs = [d1, d2, d3, d4, d5]
-    merged(dfs)
-    print(merged(dfs))
+    countires_df = merged(dfs)
+    print(countries_df)
+    correlation(countries_df)
 
 
 if __name__ == '__main__':
