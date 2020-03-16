@@ -9,7 +9,6 @@ from switch import IdSwitch
 # TO DO:
 # hospital bed density(merge)
 # GDP per capita (merge)
-# Hospt states change from IDs to state titles (create a class?)
 def area(file):
     """
     ready to merge
@@ -35,7 +34,7 @@ def temp(file):
     data = data[['STATE', 'TEMP', 'TEMP_DEV']]
     data = data.groupby('STATE').mean().reset_index()
     data['TEMP_YEAR'] = 2013
-    # Georgia was Georgia (State) before
+    # ensures Georgia stats merge properly
     data.loc[(data['STATE'].str.contains('Georgia')), 'STATE'] = 'Georgia'
     return data
 
