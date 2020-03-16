@@ -73,7 +73,7 @@ def malaria(file1, file2):
                 'risk) (per 1,000 population at risk)'): 'INCIDENCE_1000',
                 'Entity': 'NAME', 'Deaths - Malaria - Sex: Both - Age: ' + (
                 'Age-standardized (Rate) (per 100,000 people)'):
-                'DEATH_100000'}, inplace=True)
+                'DEATH_100000', 'Year': 'MAL_YEAR'}, inplace=True)
     return data
 
 
