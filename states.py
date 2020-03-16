@@ -4,11 +4,11 @@
 import pandas as pd
 import geopandas as gpd
 from switch import IdSwitch
+from functools import reduce
 
 
 # TO DO:
-# hospital bed density(merge)
-# GDP per capita (merge)
+# deal with flake8 warning thrown when using the IdSwitch class
 def area(file):
     """
     ready to merge
@@ -88,11 +88,16 @@ def pop(file):
     return data[1::]  # removes total US POP_EST, no na vals
 
 
-def merge(area, temp, shape, hosp, pop):
+def merged(dfs):
     """
-    Returns mother dataframe for states
+    Generates mother states dataframe to be used in correlation analysis,
+    machine learning, and generating plots
     """
-    print('WOOHOOO')
+    merge = reduce(lambda left, right: pd.merge(left, right, on=['STATE'],
+                                                ), dfs)
+    merge['GDP_CAPITA'] = merge['GDP_MD_EST'] / merge['POP_EST']
+    merge['HOSP_BEDS_DENS'] = merge['HOSP_BEDS'] / merge['POP_EST']
+    return merge
 
 
 def main():
@@ -107,7 +112,8 @@ def main():
         '6ac5e325468c4cb9b905f1728d6fbf0f_0.geojson'))
     d5 = pop('https://raw.githubusercontent.com/WarrenHan/CSE163/' + (
         'master/scprc-est2015-18-pop-res.csv'))
-    merge(d1, d2, d3, d4, d5)
+    dfs = [d1, d2, d3, d4, d5]
+    merged(dfs)
 
 
 if __name__ == '__main__':
