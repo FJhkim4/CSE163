@@ -71,8 +71,34 @@ def correlation(df):
     rp_i_hbd = pearsonr(list(df['HOSP_BEDS_DENS']), list(df['INCIDENCE_1000']))
     rp_i_area = pearsonr(list(df['AREA']), list(df['INCIDENCE_1000']))
     rp_i_temp = pearsonr(list(df['TEMP']), list(df['INCIDENCE_1000']))
+
+    # A dict of all the r and p values for each pair.
+    rp_collection = {
+        'r_d_POPULATION' = rp_d_pop[0],
+        'p_d_POPULATION' = rp_d_pop[1],
+        'r_d_GDP' = rp_d_gdp[0],
+        'p_d_GDP' =rp_d_gdp[1],
+        'r_d_HOSP_BEDS_DENS' = rp_d_hbd[0]
+        'p_d_HOSP_BEDS_DENS' = rp_d_hbd[1]
+        'r_d_AREA' = rp_d_area[0]
+        'p_d_AREA' = rp_d_area[1]
+        'r_d_TEMP' = rp_d_temp[0]
+        'p_d_TEMP' = rp_d_temp[1]
+        'r_i_POPULATION' = rp_i_pop[0],
+        'p_i_POPULATION' = rp_i_pop[1],
+        'r_i_GDP' = rp_i_gdp[0],
+        'p_i_GDP' =rp_i_gdp[1],
+        'r_i_HOSP_BEDS_DENS' = rp_i_hbd[0]
+        'p_i_HOSP_BEDS_DENS' = rp_i_hbd[1]
+        'r_i_AREA' = rp_i_area[0]
+        'p_i_AREA' = rp_i_area[1]
+        'r_i_TEMP' = rp_i_temp[0]
+        'p_i_TEMP' = rp_i_temp[1]
+    }
     
-    
+    return rp_collection
+
+
 def plot(df):
     """
     Plots all the merged data as scatter plots.
