@@ -104,8 +104,8 @@ def plot(df):
     axi4.set_title('Area vs Incidence Rates')
     axi5.set_title('Temperature vs Incidence Rates')
 
-    fig.delaxes(axd6)
-    fig.delaxes(axi6)
+    fig_d.delaxes(axd6)
+    fig_i.delaxes(axi6)
     fig_d.savefig("Deathrates_vs.png")
     fig_i.savefig("Incidence_vs.png")
     
