@@ -1,14 +1,15 @@
 # Warren Han, Joon Ho Kim, Anne Farley
 # CSE 163, Mentor: Wen Qiu
-# Description
-# Includes data collection years for all features for reference.
+# Allows user to generate and merge DataFrames relating to world countries,
+# temperature, population, geometry, Gross Domestic Product, malaria
+# incidences, death rates, and hospital bed density. Includes data collection
+# years for all features for reference.
 import pandas as pd
 import geopandas as gpd
 from functools import reduce
 
 
 # TO DO:
-# names of countries work for merge (e.g. S. Sudan vs South Sudan)
 # get HOSP_YEAR for bed density from CSV (manual input)
 class DataFrameCountry:
     def __init__(self):
@@ -31,7 +32,8 @@ class DataFrameCountry:
 
     def area(self):
         """
-        Description.
+        Parses through 2010 data relating to country area in sq. km.
+        Coverts to sq. miles to stay consistent with state data.
         """
         data = pd.read_csv(self._area)
         data.rename(columns={'2010': 'AREA', 'Country Name': 'NAME'},
@@ -58,9 +60,11 @@ class DataFrameCountry:
 
     def shape(self):
         """
-        Description.
+        Parses data from CSE 163 regarding world geometry to output a
+        dataframe including geometry, GDP in millions of dollars, GDP per
+        capita, and population estimates.
         """
-        data = gpd.read_file(self._shape)  # gdp in millions of dollars
+        data = gpd.read_file(self._shape)
         data = data[['NAME', 'GDP_MD_EST', 'POP_EST', 'GDP_YEAR',
                     'POP_YEAR', 'CONTINENT', 'geometry']]
         data['GDP_CAPITA'] = data['GDP_MD_EST'] / data['POP_EST']
@@ -78,7 +82,9 @@ class DataFrameCountry:
 
     def malaria(self):
         """
-        Incidence per 1000 at risk, death is per 100000 people.
+        Parses through two malaria datasets: Incidence per 1000 at risk and
+        death per 100000 people. Returns a merged dataframe based on country
+        name for this global information.
         """
         data1 = pd.read_csv(self._mal[0])
         data2 = pd.read_csv(self._mal[1])

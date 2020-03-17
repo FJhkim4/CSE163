@@ -1,6 +1,11 @@
 # Warren Han, Joon Ho Kim, Anne Farley
 # CSE 163, Mentor: Wen Qiu
-# Description
+# Generates state and country df objects to be analyzed for correlation
+# information between global malaria incidences and deaths. A machine
+# learning model is used to predict malaria infection in United States
+# if it were to become a problem (would need malaria carrying mosquitos).
+# Can be used to output various stats and plots related to malaria
+# infection worldwide.
 import pandas as pd
 import geopandas as gpd
 import matplotlib.pyplot as plt
@@ -14,7 +19,6 @@ from numpy import ravel
 
 
 # TO DO:
-# **make sure CORRELATIONS & ML work**
 # **generate interesting plots from correlation & ML outputs**
 def state():
     """
@@ -60,24 +64,14 @@ def correlation(df):
     rp_d_hbd = pearsonr(list(df['HOSP_BEDS_DENS']), list(df['DEATH_100000']))
     rp_d_area = pearsonr(list(df['AREA']), list(df['DEATH_100000']))
     rp_d_temp = pearsonr(list(df['TEMP']), list(df['DEATH_100000']))
-    print("Death Rate Correlations:")
-    print(rp_d_pop)
-    print(rp_d_gdp)
-    print(rp_d_hbd)
-    print(rp_d_area)
-    print(rp_d_temp)
+
 
     rp_i_pop = pearsonr(list(df['POP_EST']), list(df['INCIDENCE_1000']))
     rp_i_gdp = pearsonr(list(df['GDP_CAPITA']), list(df['INCIDENCE_1000']))
     rp_i_hbd = pearsonr(list(df['HOSP_BEDS_DENS']), list(df['INCIDENCE_1000']))
     rp_i_area = pearsonr(list(df['AREA']), list(df['INCIDENCE_1000']))
     rp_i_temp = pearsonr(list(df['TEMP']), list(df['INCIDENCE_1000']))
-    print("Incidence Correlations:")
-    print(rp_i_pop)
-    print(rp_i_gdp)
-    print(rp_i_hbd)
-    print(rp_i_area)
-    print(rp_i_temp)
+    
     
 def plot(df):
     """
@@ -114,16 +108,15 @@ def plot(df):
     fig_i.savefig("Incidence_vs.png")
     
 
-def ml():
+def ml(state, country):
     '''
-    This function run a k_nearest_neighbors
-    algorithium to determine which countries are most
-    similar to States in the US. It then multiplies
-    the instances and death rates of malaria in these
-    countries and expropolates that onto US state
-    populations. This function prints the results to
+    This function run a k_nearest_neighbors algorithium to determine which
+    countries are most similar to States in the US. It then multiplies the
+    instances and death rates of malaria in these countries and expropolates
+    that onto US state populations. This function prints the results to
     maps of the US.
     '''
+<<<<<<< HEAD
     # functions merge all the data together
     state_merge = state()
     country_merge = country()
@@ -132,35 +125,47 @@ def ml():
     X = country_merge[['TEMP', 'GDP_CAPITA', 'HOSP_BEDS_DENS']].values
 
     y = ravel(country_merge[['NAME']].values)
+=======
+
+    x = state[['TEMP', 'GDP_CAPITA', 'HOSP_BEDS_DENS', ]].values
+    X = country[['TEMP', 'GDP_CAPITA', 'HOSP_BEDS_DENS']].values
+
+    y = ravel(country[['NAME']].values)
+>>>>>>> 675fc732ee39f318aa57112027d6805101f5a8e6
     scaler = StandardScaler()
     scaler.fit(X)
     classifier = KNeighborsClassifier(n_neighbors=5)
     classifier.fit(X, y)
 
     state_predict = classifier.predict(x)
-    state_merge['Closest Country'] = state_predict
+    state['Closest Country'] = state_predict
 
-    condensed_df = state_merge.merge(country_merge, left_on='Closest Country', right_on='NAME')
-    final_df = condensed_df[['STATE', 'geometry_x', 'POP_EST_x', 'DEATH_100000', 'INCIDENCE_1000']]
-    final_df['Total_Incidence'] = (final_df['INCIDENCE_1000'] / 1000) * final_df['POP_EST_x']
-    final_df['Total_Death'] = (final_df['DEATH_100000'] / 100000) * final_df['POP_EST_x']
+    condensed_df = state.merge(country, left_on='Closest Country',
+                               right_on='NAME')
+    final_df = condensed_df[['STATE', 'geometry_x', 'POP_EST_x',
+                             'DEATH_100000', 'INCIDENCE_1000']]
+    final_df['Total_Incidence'] = (final_df['INCIDENCE_1000'] / 1000) * (
+                                   final_df['POP_EST_x'])
+    final_df['Total_Death'] = (final_df['DEATH_100000'] / 100000) * (
+                               final_df['POP_EST_x'])
     final_df = gpd.GeoDataFrame(final_df, geometry='geometry_x')
 
-    final_df.plot(column='Total_Incidence', legend=True, figsize=(15,15))
+    final_df.plot(column='Total_Incidence', legend=True, figsize=(10, 5))
     plt.title('Total Incidence of Malaria by State')
     plt.savefig('Instance_Plot.png')
 
-    final_df.plot(column='Total_Death', legend=True, figsize=(15,15))
+    final_df.plot(column='Total_Death', legend=True, figsize=(10, 5))
     plt.title('Total Death by Malaria by State')
     plt.savefig('Death_Plot.png')
 
 
 def main():
     state_df = state()  # creates states main dataframe
-    print(state_df)
+    # print(state_df)
     country_df = country()  # creates countries main dataframe
-    print(country_df)
-    correlation(country_df)  # determines feature correlation to labels
+    # print(country_df)
+    # correlation(country_df)  # determines feature correlation to labels
+    ml(state_df, country_df)
 
 
 if __name__ == '__main__':

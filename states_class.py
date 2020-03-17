@@ -1,7 +1,9 @@
 # Warren Han, Joon Ho Kim, Anne Farley
 # CSE 163, Mentor: Wen Qiu
-# Description
-# Includes data collection years for all features for reference.
+# Allows user to generate and merge DataFrames relating to US state
+# area, temperature, population, geometry, Gross Domestic Product, and
+# hospital bed density. Includes data collection years for all features
+# for reference.
 import pandas as pd
 import geopandas as gpd
 from switch_class import IdSwitch
@@ -29,7 +31,9 @@ class DataFrameState:
 
     def area(self):
         """
-        Description.
+        Parses through 2010 census data relating to state area in sq. miles.
+        land area included rather than total to stay consistent with global
+        data and temperature data (land temp).
         """
         data = pd.read_csv(self._area)
         data.rename(columns={'GCT_STUB.display-label1': 'STATE',
@@ -72,7 +76,9 @@ class DataFrameState:
     # DEAL WITH WARNING flake8 throws when using the class IdSwitch
     def hospital(self):
         """
-        Description.
+        Calculates the total amount of hospital beds available in each state
+        and returns a dataframe with this information along with state name.
+        Hospitals with negative values for bed count were not considered.
         """
         data = gpd.read_file(self._hosp)
         data = data.loc[(data['STATUS'] == 'OPEN') & (data['BEDS'] > 0),
@@ -94,7 +100,9 @@ class DataFrameState:
 
     def population(self):
         """
-        Description.
+        Calculates the population estimate for each state (incuding
+        Puerto Rico) and returns this as dataframe with the corresponding
+        year the data was collected.
         """
         data = pd.read_csv(self._pop)
         data.rename(columns={'STATE': 'ID', 'NAME': 'STATE',
