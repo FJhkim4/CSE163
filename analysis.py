@@ -80,11 +80,11 @@ def plot(df):
     fig_d, [[axd1, axd2, axd3], [axd4, axd5, axd6]] = plt.subplots(nrows=2, ncols=3, figsize=(20,10))
     fig_i, [[axi1, axi2, axi3], [axi4, axi5, axi6]] = plt.subplots(nrows=2, ncols=3, figsize=(20,10))
 
-    df.plot(kind='scatter',x='POP_EST', y='DEATH_100000', ax=axd1)
-    df.plot.scatter(kind='scatter', x='GDP_CAPITA', y='DEATH_100000', ax=axd2)
-    df.plot.scatter(x='HOSP_BEDS_DENS', y='DEATH_100000', ax=axd3)
-    df.plot.scatter(x='AREA', y='DEATH_100000', ax=axd4)
-    df.plot.scatter(x='TEMP', y='DEATH_100000', ax=axd5)
+    df.plot(kind='scatter',x='POP_EST', y='DEATH_100000', ax=axd1, color='red')
+    df.plot(kind='scatter', x='GDP_CAPITA', y='DEATH_100000', ax=axd2, color='blue')
+    df.plot(kind='scatter', x='HOSP_BEDS_DENS', y='DEATH_100000', ax=axd3, color='green')
+    df.plot(kind='scatter', x='AREA', y='DEATH_100000', ax=axd4, color='orange')
+    df.plot(kind='scatter', x='TEMP', y='DEATH_100000', ax=axd5, color='purple')
 
     axd1.set_title('Population Estimate vs Death Rates')
     axd2.set_title('GDP per Capita vs DeaRates')
@@ -92,11 +92,11 @@ def plot(df):
     axd4.set_title('Area vs Death Rates')
     axd5.set_title('Temperature vs Death Rates')
 
-    df.plot.scatter(x='POP_E', y='INCIDENCE_1000', ax=axi1)
-    df.plot.scatter(x='GDP_CAPITA', y='INCIDENCE_1000', ax=axi2)
-    df.plot.scatter(x='HOSP_BEDS_DENS', y='INCIDENCE_1000', ax=axi3)
-    df.plot.scatter(x='AREA', y='INCIDENCE_1000', ax=axi4)
-    df.plot.scatter(x='TEMP', y='INCIDENCE_1000', ax=axi5)
+    df.plot(kind='scatter', x='POP_E', y='INCIDENCE_1000', ax=axi1, color='red')
+    df.plot(kind='scatter', x='GDP_CAPITA', y='INCIDENCE_1000', ax=axi2, color='blue')
+    df.plot(kind='scatter', x='HOSP_BEDS_DENS', y='INCIDENCE_1000', ax=axi3, color='green')
+    df.plot(kind='scatter', x='AREA', y='INCIDENCE_1000', ax=axi4, color='orange')
+    df.plot(kind='scatter', x='TEMP', y='INCIDENCE_1000', ax=axi5, color='purple')
 
     axi1.set_title('Population Estimate vs Incidence Rates')
     axi2.set_title('GDP per Capita vs Incidence Rates')
@@ -104,6 +104,8 @@ def plot(df):
     axi4.set_title('Area vs Incidence Rates')
     axi5.set_title('Temperature vs Incidence Rates')
 
+    fig.delaxes(axd6)
+    fig.delaxes(axi6)
     fig_d.savefig("Deathrates_vs.png")
     fig_i.savefig("Incidence_vs.png")
     
