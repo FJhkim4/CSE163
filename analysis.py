@@ -152,7 +152,7 @@ def plot(df):
     plt.setp(axi5, xlabel='Temperature (C)')
     plt.setp([axi1, axi2, axi3, axi4, axi5], ylabel='Incidence of' + (
              ' Malaria per 1,000 people'))
-    plt.setp(axd4.get_xticklabels(), rotation=-45)
+    plt.setp(axi4.get_xticklabels(), rotation=-45)
 
     fig_d.delaxes(axd6)
     fig_i.delaxes(axi6)
