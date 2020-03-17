@@ -19,15 +19,15 @@ class DataFrameState:
         """
         self._area = 'https://raw.githubusercontent.com/WarrenHan/' + (
                     'CSE163/master/DEC_10_SF1_GCTPH1.US01PR_with_ann.csv')
-        self._temp = '/Joon Kim/CSE163-project/CSE163/' + (
-                    'GlobalLandTemperaturesByState.csv')
-        self._shape = '/Joon Kim/CSE163-project/CSE163/' + (
+        self._temp = 'https://raw.githubusercontent.com/WarrenHan/' + (
+                    'CSE163/master/GlobalLandTemperaturesByState.csv')
+        self._shape = '/Users/wopr/Documents/Final Project Anne/test/' + (
                      'data/Gross_Domestic_Product_GDP_by_state_19972016/' +
                      'Gross_Domestic_Product_GDP_by_state_19972016.shp')
         self._hosp = 'https://opendata.arcgis.com/datasets/6ac5e325468' + (
-                    'c4cb9b905f1728d6fbf0f_0.geojson')
+                     'c4cb9b905f1728d6fbf0f_0.geojson')
         self._pop = 'https://raw.githubusercontent.com/WarrenHan/' + (
-                'CSE163/master/scprc-est2015-18-pop-res.csv')
+                    'CSE163/master/scprc-est2015-18-pop-res.csv')
 
     def area(self):
         """
