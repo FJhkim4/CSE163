@@ -161,9 +161,9 @@ def ml(state, country):
                              'POP_EST_x', 'DEATH_100000', 'INCIDENCE_1000']]
     final_df['Total_Incidence'] = (final_df['INCIDENCE_1000'] / 1000) * final_df['POP_EST_x']
     final_df['Total_Death'] = (final_df['DEATH_100000'] / 100000) * final_df['POP_EST_x']
+    return_df = final_df
     final_df = final_df[(final_df['STATE'] != 'Alaska') & (final_df['STATE'] != 'Hawaii')]
     final_df = gpd.GeoDataFrame(final_df, geometry='geometry_x')
-    print(final_df)
     final_df.plot(column='Total_Incidence', legend=True,
                   figsize=(15,7))
     plt.title('Instances of Malaria by State')
@@ -172,7 +172,7 @@ def ml(state, country):
     final_df.plot(column='Total_Death', legend=True, figsize=(15,7))
     plt.title('Deaths by Malaria by State')
     plt.savefig('Death_Plot.png')
-
+    return return_df
 def main():
     state_df = state()  # creates states main dataframe
     # print(state_df)
