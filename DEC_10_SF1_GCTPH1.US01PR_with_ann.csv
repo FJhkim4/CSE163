@@ -1,6 +1,6 @@
 GEO.id,GEO.id2,GEO.display-label,GCT_STUB.target-geo-id,GCT_STUB.target-geo-id2,GCT_STUB.display-label,GCT_STUB.display-label1,HD01,HD02,SUBHD0301,SUBHD0302,SUBHD0303,SUBHD0401,SUBHD0402
 Id,Id2,Geography,Target Geo Id,Target Geo Id2,Geographic area,Geographic area,Population,Housing units,Area in square miles - Total area,Area in square miles - Water area,Area in square miles - Land area,Density per square mile of land area - Population,Density per square mile of land area - Housing units
-0100000US,,United States,01000000US,,United States,United States,308745538(r38234),131704730(r15031),3796742.23,264836.79,3531905.43,87.4,37.3
+0100000US,,United States,010000000US,,United States,United States,308745538(r38234),131704730(r15031),3796742.23,264836.79,3531905.43,87.4,37.3
 0100000US,,United States,0400000US01,01,United States - Alabama,Alabama,4779736(r38235),2171853(r15032),52420.07,1774.74,50645.33,94.4,42.9
 0100000US,,United States,0400000US02,02,United States - Alaska,Alaska,710231(r38823),306967(r15611),665384.04,94743.10,570640.95,1.2,0.5
 0100000US,,United States,0400000US04,04,United States - Arizona,Arizona,6392017,2844526,113990.30,396.22,113594.08,56.3,25.0
