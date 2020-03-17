@@ -78,16 +78,16 @@ def correlation(df):
 
 def plot(df):
     """
-    Plots all the merged data with scatter plots.
+    Plots all the merged data as scatter plots.
     """
     fig_d, [axd1, axd2, axd3, axd4, axd5] = plt.subplots(5)
     fig_i, [axi1, axi2, axi3, axi4, axi5] = plt.subplots(5)
 
-    df.plot.scatter(x=(df['POP_EST'], y=df['DEATH_100000'], ax=axd1))
-    df.plot.scatter(x=(df['GDP_CAPITA'], y=df['DEATH_100000'], ax=axd2))
-    df.plot.scatter(x=(df['HOSP_BEDS_DENS'], y=df['DEATH_100000'], ax=axd3))
-    df.plot.scatter(x=(df['AREA'], y=df['DEATH_100000'], ax=axd4))
-    df.plot.scatter(x=(df['TEMP'], y=df['DEATH_100000'], ax=axd5))
+    df.plot.scatter(x=df['POP_EST'], y=df['DEATH_100000'], ax=axd1)
+    df.plot.scatter(x=df['GDP_CAPITA'], y=df['DEATH_100000'], ax=axd2)
+    df.plot.scatter(x=df['HOSP_BEDS_DENS'], y=df['DEATH_100000'], ax=axd3)
+    df.plot.scatter(x=df['AREA'], y=df['DEATH_100000'], ax=axd4)
+    df.plot.scatter(x=df['TEMP'], y=df['DEATH_100000'], ax=axd5)
 
     axd1.set_title('Population Estimate vs Death Rates')
     axd2.set_title('GDP per Capita vs Death Rates')
@@ -95,17 +95,20 @@ def plot(df):
     axd4.set_title('Area vs Death Rates')
     axd5.set_title('Temperature vs Death Rates')
 
-    df.plot.scatter(x=(df['POP_EST'], y=df['INCIDENCE_1000'], ax=axi1))
-    df.plot.scatter(x=(df['GDP_CAPITA'], y=df['INCIDENCE_1000'], ax=axi2))
-    df.plot.scatter(x=(df['HOSP_BEDS_DENS'], y=df['INCIDENCE_1000'], ax=axi3))
-    df.plot.scatter(x=(df['AREA'], y=df['INCIDENCE_1000'], ax=axi4))
-    df.plot.scatter(x=(df['TEMP'], y=df['INCIDENCE_1000'], ax=axi5))
+    df.plot.scatter(x=df['POP_EST'], y=df['INCIDENCE_1000'], ax=axi1)
+    df.plot.scatter(x=df['GDP_CAPITA'], y=df['INCIDENCE_1000'], ax=axi2)
+    df.plot.scatter(x=df['HOSP_BEDS_DENS'], y=df['INCIDENCE_1000'], ax=axi3)
+    df.plot.scatter(x=df['AREA'], y=df['INCIDENCE_1000'], ax=axi4)
+    df.plot.scatter(x=df['TEMP'], y=df['INCIDENCE_1000'], ax=axi5)
 
     axi1.set_title('Population Estimate vs Incident Rates')
     axi2.set_title('GDP per Capita vs Incident Rates')
     axi3.set_title('Hospital Beds Density vs Incident Rates')
     axi4.set_title('Area vs Incident Rates')
     axi5.set_title('Temperature vs Incident Rates')
+
+    fig_d.savefig("death_rates.png")
+    fig_i.savefig("inc_rates.png")
 
 
 def main():
