@@ -77,11 +77,11 @@ def plot(df):
     """
     Plots all the merged data as scatter plots.
     """
-    fig_d, [[axd1, axd2, axd3], [axd4, axd5]] = plt.subplots(2, figsize=(20,10), ncols=3)
-    fig_i, [[axi1, axi2, axi3], [axi4, axi5]] = plt.subplots(2, figsize=(20,10), ncols=3)
+    fig_d, [[axd1, axd2, axd3], [axd4, axd5, axd6]] = plt.subplots(nrows=2, ncols=3, figsize=(20,10))
+    fig_i, [[axi1, axi2, axi3], [axi4, axi5, axi6]] = plt.subplots(nrows=2, ncols=3, figsize=(20,10))
 
-    df.plot.scatter(x='POP_EST', y='DEATH_100000', ax=axd1)
-    df.plot.scatter(x='GDP_CAPITA', y='DEATH_100000', ax=axd2)
+    df.plot(kind='scatter',x='POP_EST', y='DEATH_100000', ax=axd1)
+    df.plot.scatter(kind='scatter', x='GDP_CAPITA', y='DEATH_100000', ax=axd2)
     df.plot.scatter(x='HOSP_BEDS_DENS', y='DEATH_100000', ax=axd3)
     df.plot.scatter(x='AREA', y='DEATH_100000', ax=axd4)
     df.plot.scatter(x='TEMP', y='DEATH_100000', ax=axd5)
@@ -116,22 +116,11 @@ def ml(state, country):
     that onto US state populations. This function prints the results to
     maps of the US.
     '''
-<<<<<<< HEAD
-    # functions merge all the data together
-    state_merge = state()
-    country_merge = country()
-
-    x = state_merge[['TEMP', 'GDP_CAPITA', 'HOSP_BEDS_DENS', ]].values
-    X = country_merge[['TEMP', 'GDP_CAPITA', 'HOSP_BEDS_DENS']].values
-
-    y = ravel(country_merge[['NAME']].values)
-=======
 
     x = state[['TEMP', 'GDP_CAPITA', 'HOSP_BEDS_DENS', ]].values
     X = country[['TEMP', 'GDP_CAPITA', 'HOSP_BEDS_DENS']].values
 
     y = ravel(country[['NAME']].values)
->>>>>>> 675fc732ee39f318aa57112027d6805101f5a8e6
     scaler = StandardScaler()
     scaler.fit(X)
     classifier = KNeighborsClassifier(n_neighbors=5)
