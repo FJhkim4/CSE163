@@ -138,15 +138,21 @@ def ml(state, country):
     final_df['Total_Death'] = (final_df['DEATH_100000'] / 100000) * (
                                final_df['POP_EST_x'])
     final_df = gpd.GeoDataFrame(final_df, geometry='geometry_x')
-
-    final_df.plot(column='Total_Incidence', legend=True, figsize=(10, 5))
-    plt.title('Total Incidence of Malaria by State')
+    condensed_df = state_merge.merge(country_merge,
+                                     left_on='Closest Country', right_on='NAME')
+    
+    final_df = condensed_df[['STATE', 'geometry_x',
+                             'POP_EST_x', 'DEATH_100000', 'INCIDENCE_1000']]
+    final_df['Total_Incidence'] = (final_df['INCIDENCE_1000'] / 1000) * final_df['POP_EST_x']
+    final_df['Total_Death'] = (final_df['DEATH_100000'] / 100000) * final_df['POP_EST_x']
+    final_df = final_df[(final_df['STATE'] != 'Alaska') & (final_df['STATE'] != 'Hawaii')]
+    final_df = gpd.GeoDataFrame(final_df, geometry='geometry_x')
+    final_df.plot(column='Total_Incidence', legend=True,
+                  figsize=(15,7))
     plt.savefig('Instance_Plot.png')
 
-    final_df.plot(column='Total_Death', legend=True, figsize=(10, 5))
-    plt.title('Total Death by Malaria by State')
+    final_df.plot(column='Total_Death', legend=True, figsize=(15,7))
     plt.savefig('Death_Plot.png')
-
 
 def main():
     state_df = state()  # creates states main dataframe
