@@ -80,7 +80,7 @@ def plot(df):
     fig_d, [[axd1, axd2, axd3], [axd4, axd5, axd6]] = plt.subplots(nrows=2, ncols=3, figsize=(20,10))
     fig_i, [[axi1, axi2, axi3], [axi4, axi5, axi6]] = plt.subplots(nrows=2, ncols=3, figsize=(20,10))
 
-    df.plot(kind='scatter',x='POP_EST', y='DEATH_100000', ax=axd1, color='red')
+    df.plot(kind='scatter', x='POP_EST', y='DEATH_100000', ax=axd1, color='red')
     df.plot(kind='scatter', x='GDP_CAPITA', y='DEATH_100000', ax=axd2, color='blue')
     df.plot(kind='scatter', x='HOSP_BEDS_DENS', y='DEATH_100000', ax=axd3, color='green')
     df.plot(kind='scatter', x='AREA', y='DEATH_100000', ax=axd4, color='orange')
@@ -92,7 +92,14 @@ def plot(df):
     axd4.set_title('Area vs Death Rates')
     axd5.set_title('Temperature vs Death Rates')
 
-    df.plot(kind='scatter', x='POP_E', y='INCIDENCE_1000', ax=axi1, color='red')
+    plt.setp(axd1, xlabel='Population Estimate')
+    plt.setp(axd2, xlabel='GDP per Capita ($1,000,000)')
+    plt.setp(axd3, xlabel='Hospital Beds per 1,000 People')
+    plt.setp(axd4, xlabel='Area (Square Miles)')
+    plt.setp(axd5, xlabel='Temperature (C)')
+    plt.setp([axd1, axd2, axd3, axd4, axd5], ylabel='Death per 100,000 People')
+    
+    df.plot(kind='scatter', x='POP_EST', y='INCIDENCE_1000', ax=axi1, color='red')
     df.plot(kind='scatter', x='GDP_CAPITA', y='INCIDENCE_1000', ax=axi2, color='blue')
     df.plot(kind='scatter', x='HOSP_BEDS_DENS', y='INCIDENCE_1000', ax=axi3, color='green')
     df.plot(kind='scatter', x='AREA', y='INCIDENCE_1000', ax=axi4, color='orange')
@@ -103,6 +110,13 @@ def plot(df):
     axi3.set_title('Hospital Beds Density vs Incidence Rates')
     axi4.set_title('Area vs Incidence Rates')
     axi5.set_title('Temperature vs Incidence Rates')
+
+    plt.setp(axi1, xlabel='Population Estimate')
+    plt.setp(axi2, xlabel='GDP per Capita ($1,000,000)')
+    plt.setp(axi3, xlabel='Hospital Beds per 1,000 People')
+    plt.setp(axi4, xlabel='Area (Square Miles)')
+    plt.setp(axi5, xlabel='Temperature (C)')
+    plt.setp([axi1, axi2, axi3, axi4, axi5], ylabel='Incidence of Malaria per 1,000 people')
 
     fig_d.delaxes(axd6)
     fig_i.delaxes(axi6)
