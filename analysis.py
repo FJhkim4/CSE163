@@ -151,9 +151,11 @@ def ml(state, country):
     final_df = gpd.GeoDataFrame(final_df, geometry='geometry_x')
     final_df.plot(column='Total_Incidence', legend=True,
                   figsize=(15,7))
+    plt.title('Instances of Malaria by State')
     plt.savefig('Instance_Plot.png')
 
     final_df.plot(column='Total_Death', legend=True, figsize=(15,7))
+    plt.title('Deaths by Malaria by State')
     plt.savefig('Death_Plot.png')
 
 def main():
