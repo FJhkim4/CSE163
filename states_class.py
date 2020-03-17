@@ -4,7 +4,7 @@
 # Includes data collection years for all features for reference.
 import pandas as pd
 import geopandas as gpd
-from switch import IdSwitch
+from switch_class import IdSwitch
 from functools import reduce
 
 
@@ -17,9 +17,9 @@ class DataFrameState:
         """
         self._area = 'https://raw.githubusercontent.com/WarrenHan/' + (
                     'CSE163/master/DEC_10_SF1_GCTPH1.US01PR_with_ann.csv')
-        self._temp = '/Users/wopr/Documents/Final Project Anne/test/data/' + (
+        self._temp = '/Joon Kim/CSE163-project/CSE163/' + (
                     'GlobalLandTemperaturesByState.csv')
-        self._shape = '/Users/wopr/Documents/Final Project Anne/test/' + (
+        self._shape = '/Joon Kim/CSE163-project/CSE163/' + (
                      'data/Gross_Domestic_Product_GDP_by_state_19972016/' +
                      'Gross_Domestic_Product_GDP_by_state_19972016.shp')
         self._hosp = 'https://opendata.arcgis.com/datasets/6ac5e325468' + (

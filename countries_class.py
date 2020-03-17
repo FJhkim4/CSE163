@@ -20,7 +20,7 @@ class DataFrameCountry:
                     '2_822348.csv')
         self._temp = 'https://raw.githubusercontent.com/WarrenHan/' + (
                     'CSE163/master/GlobalLandTemperaturesByCountry.csv')
-        self._shape = '/Users/wopr/Documents/Final Project Anne/test/' + (
+        self._shape = '/Joon Kim/CSE163-project/CSE163/' + (
                      'data/ne_110m_admin_0_countries.shp')
         self._hosp = 'https://raw.githubusercontent.com/WarrenHan/' + (
                     'CSE163/master/Hospital_Beds.csv')
