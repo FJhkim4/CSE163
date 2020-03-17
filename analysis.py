@@ -7,6 +7,10 @@ import matplotlib.pyplot as plt
 from states_class import DataFrameState
 from countries_class import DataFrameCountry
 from scipy.stats import pearsonr
+from sklearn.preprocessing import StandardScaler
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.metrics import classification_report, confusion_matrix
+from numpy import ravel
 
 
 # TO DO:
@@ -74,8 +78,7 @@ def correlation(df):
     print(rp_i_hbd)
     print(rp_i_area)
     print(rp_i_temp)
-
-
+    
 def plot(df):
     """
     Plots all the merged data as scatter plots.
@@ -109,6 +112,61 @@ def plot(df):
 
     fig_d.savefig("death_rates.png")
     fig_i.savefig("inc_rates.png")
+    
+
+def ml():
+    '''
+    This function run a k_nearest_neighbors
+    algorithium to determine which countries are most
+    similar to States in the US. It then multiplies
+    the instances and death rates of malaria in these
+    countries and expropolates that onto US state
+    populations. This function prints the results to
+    maps of the US.
+    '''
+    state = DataFrameState() 
+    st_area = state.area()
+    st_temp = state.temp()
+    st_shape = state.shape()
+    st_hospital = state.hospital()
+    st_population = state.population()
+    dfs = [st_area, st_temp, st_shape, st_hospital, st_population]
+    state_merge = state.merged(dfs)
+
+    c = DataFrameCountry() 
+    c_area = c.area()
+    c_temp = c.temp()
+    c_shape = c.shape()
+    c_hospital = c.hospital()
+    c_malaria = c.malaria()
+    dfs1 = [c_area, c_temp, c_shape, c_hospital, c_malaria]
+    country_merge = c.merged(dfs1)
+
+    x = state_merge[['TEMP', 'GDP_CAPITA', 'HOSP_BEDS_DENS', ]].values
+    X = country_merge[['TEMP', 'GDP_CAPITA', 'HOSP_BEDS_DENS']].values
+
+    y = ravel(country_merge[['NAME']].values)
+    scaler = StandardScaler()
+    scaler.fit(X)
+    classifier = KNeighborsClassifier(n_neighbors=5)
+    classifier.fit(X, y)
+
+    state_predict = classifier.predict(x)
+    state_merge['Closest Country'] = state_predict
+
+    condensed_df = state_merge.merge(country_merge, left_on='Closest Country', right_on='NAME')
+    final_df = condensed_df[['STATE', 'geometry_x', 'POP_EST_x', 'DEATH_100000', 'INCIDENCE_1000']]
+    final_df['Total_Incidence'] = (final_df['INCIDENCE_1000'] / 1000) * final_df['POP_EST_x']
+    final_df['Total_Death'] = (final_df['DEATH_100000'] / 100000) * final_df['POP_EST_x']
+    final_df = gpd.GeoDataFrame(final_df, geometry='geometry_x')
+
+    final_df.plot(column='Total_Incidence', legend=True, figsize=(15,15))
+    plt.title('Total Incidence of Malaria by State')
+    plt.savefig('Instance_Plot.png')
+
+    final_df.plot(column='Total_Death', legend=True, figsize=(15,15))
+    plt.title('Total Death by Malaria by State')
+    plt.savefig('Death_Plot.png')
 
 
 def main():
@@ -117,7 +175,6 @@ def main():
     country_df = country()  # creates countries main dataframe
     print(country_df)
     correlation(country_df)  # determines feature correlation to labels
-    plot(country_df)
 
 
 if __name__ == '__main__':
