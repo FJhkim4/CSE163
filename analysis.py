@@ -1,6 +1,11 @@
 # Warren Han, Joon Ho Kim, Anne Farley
 # CSE 163, Mentor: Wen Qiu
-# Description
+# Generates state and country df objects to be analyzed for correlation
+# information between global malaria incidences and deaths. A machine
+# learning model is used to predict malaria infection in United States
+# if it were to become a problem (would need malaria carrying mosquitos).
+# Can be used to output various stats and plots related to malaria
+# infection worldwide.
 import pandas as pd
 import geopandas as gpd
 import matplotlib.pyplot as plt
@@ -14,7 +19,6 @@ from numpy import ravel
 
 
 # TO DO:
-# **make sure CORRELATIONS & ML work**
 # **generate interesting plots from correlation & ML outputs**
 def state():
     """
