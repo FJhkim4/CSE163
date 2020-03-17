@@ -127,6 +127,9 @@ def plot(df):
     plt.setp(axd5, xlabel='Temperature (C)')
     plt.setp([axd1, axd2, axd3, axd4, axd5], ylabel='Death per 100,000 People')
     plt.setp(axd4.get_xticklabels(), rotation=-45)
+    
+    # adjusts x axis limits
+    axd2.set_xlim(left=-.0025)
 
     df.plot(kind='scatter', x='POP_EST', y='INCIDENCE_1000', ax=axi1,
             color='red')
@@ -154,6 +157,9 @@ def plot(df):
              ' Malaria per 1,000 people'))
     plt.setp(axi4.get_xticklabels(), rotation=-45)
 
+    # adjusts x axis limits
+    axi2.set_xlim(left=-.0025)
+    
     fig_d.delaxes(axd6)
     fig_i.delaxes(axi6)
     fig_d.savefig("Deathrates_vs.png")
