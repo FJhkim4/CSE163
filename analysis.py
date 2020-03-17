@@ -49,7 +49,7 @@ def country():
 def correlation(df):
     """
     Finds the correlation between different variables from each country and
-    compares them to death rates and malaria incidents. Specifically finds
+    compares them to death rates and malaria incidence. Specifically finds
     the r and p value which determines levels of correlation. Population
     estimates, GDP per capita, hospital bed density (per 1000 people), average
     annual temperature were the evaluated factors.
@@ -83,35 +83,35 @@ def plot(df):
     """
     Plots all the merged data as scatter plots.
     """
-    fig_d, [axd1, axd2, axd3, axd4, axd5] = plt.subplots(5)
-    fig_i, [axi1, axi2, axi3, axi4, axi5] = plt.subplots(5)
+    fig_d, [[axd1, axd2, axd3], [axd4, axd5]] = plt.subplots(2, figsize=(20,10), ncols=3)
+    fig_i, [[axi1, axi2, axi3], [axi4, axi5]] = plt.subplots(2, figsize=(20,10), ncols=3)
 
-    df.plot.scatter(x=df['POP_EST'], y=df['DEATH_100000'], ax=axd1)
-    df.plot.scatter(x=df['GDP_CAPITA'], y=df['DEATH_100000'], ax=axd2)
-    df.plot.scatter(x=df['HOSP_BEDS_DENS'], y=df['DEATH_100000'], ax=axd3)
-    df.plot.scatter(x=df['AREA'], y=df['DEATH_100000'], ax=axd4)
-    df.plot.scatter(x=df['TEMP'], y=df['DEATH_100000'], ax=axd5)
+    df.plot.scatter(x='POP_EST', y='DEATH_100000', ax=axd1)
+    df.plot.scatter(x='GDP_CAPITA', y='DEATH_100000', ax=axd2)
+    df.plot.scatter(x='HOSP_BEDS_DENS', y='DEATH_100000', ax=axd3)
+    df.plot.scatter(x='AREA', y='DEATH_100000', ax=axd4)
+    df.plot.scatter(x='TEMP', y='DEATH_100000', ax=axd5)
 
     axd1.set_title('Population Estimate vs Death Rates')
-    axd2.set_title('GDP per Capita vs Death Rates')
+    axd2.set_title('GDP per Capita vs DeaRates')
     axd3.set_title('Hospital Beds Density vs Death Rates')
     axd4.set_title('Area vs Death Rates')
     axd5.set_title('Temperature vs Death Rates')
 
-    df.plot.scatter(x=df['POP_EST'], y=df['INCIDENCE_1000'], ax=axi1)
-    df.plot.scatter(x=df['GDP_CAPITA'], y=df['INCIDENCE_1000'], ax=axi2)
-    df.plot.scatter(x=df['HOSP_BEDS_DENS'], y=df['INCIDENCE_1000'], ax=axi3)
-    df.plot.scatter(x=df['AREA'], y=df['INCIDENCE_1000'], ax=axi4)
-    df.plot.scatter(x=df['TEMP'], y=df['INCIDENCE_1000'], ax=axi5)
+    df.plot.scatter(x='POP_E', y='INCIDENCE_1000', ax=axi1)
+    df.plot.scatter(x='GDP_CAPITA', y='INCIDENCE_1000', ax=axi2)
+    df.plot.scatter(x='HOSP_BEDS_DENS', y='INCIDENCE_1000', ax=axi3)
+    df.plot.scatter(x='AREA', y='INCIDENCE_1000', ax=axi4)
+    df.plot.scatter(x='TEMP', y='INCIDENCE_1000', ax=axi5)
 
-    axi1.set_title('Population Estimate vs Incident Rates')
-    axi2.set_title('GDP per Capita vs Incident Rates')
-    axi3.set_title('Hospital Beds Density vs Incident Rates')
-    axi4.set_title('Area vs Incident Rates')
-    axi5.set_title('Temperature vs Incident Rates')
+    axi1.set_title('Population Estimate vs Incidence Rates')
+    axi2.set_title('GDP per Capita vs Incidence Rates')
+    axi3.set_title('Hospital Beds Density vs Incidence Rates')
+    axi4.set_title('Area vs Incidence Rates')
+    axi5.set_title('Temperature vs Incidence Rates')
 
-    fig_d.savefig("death_rates.png")
-    fig_i.savefig("inc_rates.png")
+    fig_d.savefig("Deathrates_vs.png")
+    fig_i.savefig("Incidence_vs.png")
     
 
 def ml():
@@ -124,23 +124,9 @@ def ml():
     populations. This function prints the results to
     maps of the US.
     '''
-    state = DataFrameState() 
-    st_area = state.area()
-    st_temp = state.temp()
-    st_shape = state.shape()
-    st_hospital = state.hospital()
-    st_population = state.population()
-    dfs = [st_area, st_temp, st_shape, st_hospital, st_population]
-    state_merge = state.merged(dfs)
-
-    c = DataFrameCountry() 
-    c_area = c.area()
-    c_temp = c.temp()
-    c_shape = c.shape()
-    c_hospital = c.hospital()
-    c_malaria = c.malaria()
-    dfs1 = [c_area, c_temp, c_shape, c_hospital, c_malaria]
-    country_merge = c.merged(dfs1)
+    # functions merge all the data together
+    state_merge = state()
+    country_merge = country()
 
     x = state_merge[['TEMP', 'GDP_CAPITA', 'HOSP_BEDS_DENS', ]].values
     X = country_merge[['TEMP', 'GDP_CAPITA', 'HOSP_BEDS_DENS']].values
@@ -179,3 +165,4 @@ def main():
 
 if __name__ == '__main__':
     main()
+    
