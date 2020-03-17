@@ -60,24 +60,14 @@ def correlation(df):
     rp_d_hbd = pearsonr(list(df['HOSP_BEDS_DENS']), list(df['DEATH_100000']))
     rp_d_area = pearsonr(list(df['AREA']), list(df['DEATH_100000']))
     rp_d_temp = pearsonr(list(df['TEMP']), list(df['DEATH_100000']))
-    print("Death Rate Correlations:")
-    print(rp_d_pop)
-    print(rp_d_gdp)
-    print(rp_d_hbd)
-    print(rp_d_area)
-    print(rp_d_temp)
+
 
     rp_i_pop = pearsonr(list(df['POP_EST']), list(df['INCIDENCE_1000']))
     rp_i_gdp = pearsonr(list(df['GDP_CAPITA']), list(df['INCIDENCE_1000']))
     rp_i_hbd = pearsonr(list(df['HOSP_BEDS_DENS']), list(df['INCIDENCE_1000']))
     rp_i_area = pearsonr(list(df['AREA']), list(df['INCIDENCE_1000']))
     rp_i_temp = pearsonr(list(df['TEMP']), list(df['INCIDENCE_1000']))
-    print("Incidence Correlations:")
-    print(rp_i_pop)
-    print(rp_i_gdp)
-    print(rp_i_hbd)
-    print(rp_i_area)
-    print(rp_i_temp)
+    
     
 def plot(df):
     """
@@ -114,57 +104,38 @@ def plot(df):
     fig_i.savefig("inc_rates.png")
     
 
-def ml():
+def ml(state, country):
     '''
-    This function run a k_nearest_neighbors
-    algorithium to determine which countries are most
-    similar to States in the US. It then multiplies
-    the instances and death rates of malaria in these
-    countries and expropolates that onto US state
-    populations. This function prints the results to
+    This function run a k_nearest_neighbors algorithium to determine which
+    countries are most similar to States in the US. It then multiplies the
+    instances and death rates of malaria in these countries and expropolates
+    that onto US state populations. This function prints the results to
     maps of the US.
     '''
-    state = DataFrameState() 
-    st_area = state.area()
-    st_temp = state.temp()
-    st_shape = state.shape()
-    st_hospital = state.hospital()
-    st_population = state.population()
-    dfs = [st_area, st_temp, st_shape, st_hospital, st_population]
-    state_merge = state.merged(dfs)
 
-    c = DataFrameCountry() 
-    c_area = c.area()
-    c_temp = c.temp()
-    c_shape = c.shape()
-    c_hospital = c.hospital()
-    c_malaria = c.malaria()
-    dfs1 = [c_area, c_temp, c_shape, c_hospital, c_malaria]
-    country_merge = c.merged(dfs1)
+    x = state[['TEMP', 'GDP_CAPITA', 'HOSP_BEDS_DENS', ]].values
+    X = country[['TEMP', 'GDP_CAPITA', 'HOSP_BEDS_DENS']].values
 
-    x = state_merge[['TEMP', 'GDP_CAPITA', 'HOSP_BEDS_DENS', ]].values
-    X = country_merge[['TEMP', 'GDP_CAPITA', 'HOSP_BEDS_DENS']].values
-
-    y = ravel(country_merge[['NAME']].values)
+    y = ravel(country[['NAME']].values)
     scaler = StandardScaler()
     scaler.fit(X)
     classifier = KNeighborsClassifier(n_neighbors=5)
     classifier.fit(X, y)
 
     state_predict = classifier.predict(x)
-    state_merge['Closest Country'] = state_predict
+    state['Closest Country'] = state_predict
 
-    condensed_df = state_merge.merge(country_merge, left_on='Closest Country', right_on='NAME')
+    condensed_df = state.merge(country, left_on='Closest Country', right_on='NAME')
     final_df = condensed_df[['STATE', 'geometry_x', 'POP_EST_x', 'DEATH_100000', 'INCIDENCE_1000']]
     final_df['Total_Incidence'] = (final_df['INCIDENCE_1000'] / 1000) * final_df['POP_EST_x']
     final_df['Total_Death'] = (final_df['DEATH_100000'] / 100000) * final_df['POP_EST_x']
     final_df = gpd.GeoDataFrame(final_df, geometry='geometry_x')
 
-    final_df.plot(column='Total_Incidence', legend=True, figsize=(15,15))
+    final_df.plot(column='Total_Incidence', legend=True, figsize=(15, 15))
     plt.title('Total Incidence of Malaria by State')
     plt.savefig('Instance_Plot.png')
 
-    final_df.plot(column='Total_Death', legend=True, figsize=(15,15))
+    final_df.plot(column='Total_Death', legend=True, figsize=(15, 15))
     plt.title('Total Death by Malaria by State')
     plt.savefig('Death_Plot.png')
 
