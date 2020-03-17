@@ -116,22 +116,11 @@ def ml(state, country):
     that onto US state populations. This function prints the results to
     maps of the US.
     '''
-<<<<<<< HEAD
-    # functions merge all the data together
-    state_merge = state()
-    country_merge = country()
-
-    x = state_merge[['TEMP', 'GDP_CAPITA', 'HOSP_BEDS_DENS', ]].values
-    X = country_merge[['TEMP', 'GDP_CAPITA', 'HOSP_BEDS_DENS']].values
-
-    y = ravel(country_merge[['NAME']].values)
-=======
 
     x = state[['TEMP', 'GDP_CAPITA', 'HOSP_BEDS_DENS', ]].values
     X = country[['TEMP', 'GDP_CAPITA', 'HOSP_BEDS_DENS']].values
 
     y = ravel(country[['NAME']].values)
->>>>>>> 675fc732ee39f318aa57112027d6805101f5a8e6
     scaler = StandardScaler()
     scaler.fit(X)
     classifier = KNeighborsClassifier(n_neighbors=5)
