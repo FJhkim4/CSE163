@@ -125,27 +125,32 @@ def ml(state, country):
     state_predict = classifier.predict(x)
     state['Closest Country'] = state_predict
 
-    condensed_df = state.merge(country, left_on='Closest Country', right_on='NAME')
-    final_df = condensed_df[['STATE', 'geometry_x', 'POP_EST_x', 'DEATH_100000', 'INCIDENCE_1000']]
-    final_df['Total_Incidence'] = (final_df['INCIDENCE_1000'] / 1000) * final_df['POP_EST_x']
-    final_df['Total_Death'] = (final_df['DEATH_100000'] / 100000) * final_df['POP_EST_x']
+    condensed_df = state.merge(country, left_on='Closest Country',
+                               right_on='NAME')
+    final_df = condensed_df[['STATE', 'geometry_x', 'POP_EST_x',
+                             'DEATH_100000', 'INCIDENCE_1000']]
+    final_df['Total_Incidence'] = (final_df['INCIDENCE_1000'] / 1000) * (
+                                   final_df['POP_EST_x'])
+    final_df['Total_Death'] = (final_df['DEATH_100000'] / 100000) * (
+                               final_df['POP_EST_x'])
     final_df = gpd.GeoDataFrame(final_df, geometry='geometry_x')
 
-    final_df.plot(column='Total_Incidence', legend=True, figsize=(15, 15))
+    final_df.plot(column='Total_Incidence', legend=True, figsize=(10, 5))
     plt.title('Total Incidence of Malaria by State')
     plt.savefig('Instance_Plot.png')
 
-    final_df.plot(column='Total_Death', legend=True, figsize=(15, 15))
+    final_df.plot(column='Total_Death', legend=True, figsize=(10, 5))
     plt.title('Total Death by Malaria by State')
     plt.savefig('Death_Plot.png')
 
 
 def main():
     state_df = state()  # creates states main dataframe
-    print(state_df)
+    # print(state_df)
     country_df = country()  # creates countries main dataframe
-    print(country_df)
-    correlation(country_df)  # determines feature correlation to labels
+    # print(country_df)
+    # correlation(country_df)  # determines feature correlation to labels
+    ml(state_df, country_df)
 
 
 if __name__ == '__main__':
